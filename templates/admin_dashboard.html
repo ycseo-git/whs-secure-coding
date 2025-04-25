@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}관리자 대시보드{% endblock %}
+{% block content %}
+<h2>관리자 페이지</h2>
+
+<h3>전체 유저 목록</h3>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>아이디</th>
+    <th>잔액</th>
+    <th>관리</th>
+  </tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.username }}</td>
+    <td>{{ u.balance }}</td>
+    <td>
+      <form method="POST" action="{{ url_for('toggle_user_active', user_id=u.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">
+          {{ '🔒 휴면 전환' if u.is_active == 1 else '🔓 휴면 해제' }}
+        </button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3 style="margin-top: 30px;">전체 상품 목록</h3>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>제목</th>
+    <th>가격</th>
+    <th>판매자</th>
+    <th>관리</th>
+  </tr>
+  {% for p in products %}
+  <tr>
+    <td>{{ p.id }}</td>
+    <td>{{ p.title }}</td>
+    <td>{{ p.price }}</td>
+    <td>{{ p.seller_name }}</td>
+    <td>
+      <form method="POST" action="{{ url_for('toggle_product_deleted', product_id=p.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">
+          {{ '👁️‍🗨️ 비공개' if p.is_deleted == 0 else '🔁 공개' }}
+        </button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

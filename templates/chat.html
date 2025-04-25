@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ other_user }}와의 채팅{% endblock %}
+{% block content %}
+<h2>{{ other_user }}와의 채팅</h2>
+
+<div style="border:1px solid #ccc; padding:10px; height:300px; overflow-y:scroll;">
+  {% for m in messages %}
+    <p><strong>{{ '나' if m.sender_id == session['user_id'] else other_user }}:</strong> {{ m.message }}</p>
+  {% endfor %}
+</div>
+
+<form method="POST" action="{{ url_for('chat_room', room_id=room_id) }}" style="margin-top:10px;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="text" name="message" placeholder="메시지 입력" required>
+  <button type="submit">전송</button>
+</form>
+{% endblock %}

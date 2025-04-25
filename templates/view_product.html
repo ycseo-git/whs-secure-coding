@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}상품 상세보기{% endblock %}
+{% block content %}
+<h2>{{ product.title }}</h2>
+<p>{{ product.description }}</p>
+<p>가격: {{ product.price }}</p>
+<p>판매자: {{ seller.username if seller else '알 수 없음' }}</p>
+
+{% if session['user_id'] != product.seller_id %}
+  <!-- ✅ 채팅하기 버튼 (CSRF 토큰 추가 완료) -->
+  <form method="POST" action="{{ url_for('start_chat', seller_id=seller.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit">채팅하기</button>
+  </form>
+{% endif %}
+
+<hr>
+
+{% if session['user_id'] != product['seller_id'] %}
+<form method="POST" action="{{ url_for('purchase_product', product_id=product['id']) }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button type="submit">이 상품 구매하기</button>
+</form>
+{% endif %}
+
+<h4>이 상품을 신고하시겠습니까?</h4>
+<form method="POST" action="/report">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="target_id" value="{{ product.id }}">
+  <input type="hidden" name="reason" value="부적절한 게시물">
+  <button type="submit">신고하기</button>
+</form>
+{% endblock %}

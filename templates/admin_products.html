@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}불량 상품 관리{% endblock %}
+{% block content %}
+<h2>신고된 상품 목록</h2>
+<ul>
+  {% for p in products %}
+    <li>
+      <strong>{{ p.title }}</strong> - {{ p.description }} (가격: {{ p.price }})
+      <form method="POST" action="/admin/delete-product/{{ p.id }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">삭제</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+{% if not products %}
+  <p>신고된 상품이 없습니다.</p>
+{% endif %}
+{% endblock %}

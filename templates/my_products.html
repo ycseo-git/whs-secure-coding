@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>내가 등록한 상품</h2>
+<ul>
+  {% for product in products %}
+    <li>
+      <strong>{{ product[1] }}</strong> (설명: {{ product[2] }})
+      <form method="POST" action="/delete-product/{{ product[0] }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">삭제</button>
+      </form>
+      <a href="{{ url_for('edit_product', product_id=product[0]) }}">[수정]</a>
+    </li>
+  {% endfor %}
+</ul>
+{% if not products %}
+  <p>등록된 상품이 없습니다.</p>
+{% endif %}
+{% endblock %}

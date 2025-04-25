@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}사용자 검색{% endblock %}
+{% block content %}
+<h2>사용자 검색</h2>
+
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="text" name="keyword" placeholder="사용자명 검색" value="{{ keyword or '' }}">
+  <button type="submit">검색</button>
+</form>
+
+{% if users %}
+  <ul>
+    {% for u in users %}
+      <li>
+        <a href="/user/{{ u.id }}">{{ u.username }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% elif keyword %}
+  <p>검색 결과가 없습니다.</p>
+{% endif %}
+{% endblock %}
