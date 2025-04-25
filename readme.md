@@ -46,4 +46,4 @@ WHERE username = 'you';
 ```
 
 This approach is more secure than exposing such functions directly on the web page.
-~~In fact, I did this because there isn't enough time to implement it.~~
+~~In fact, I did this because there isn't enough time to implement it. Apologies for not cleaning up the comments properly. But please bear with me.~~
